@@ -1,0 +1,10 @@
+route:
+  receiver: 'email-alert'
+
+receivers:
+- name: 'email-alert'
+  email_configs:
+  - to: 'root@localhost'
+    from: 'alert@localhost'
+    smarthost: 'localhost:25'
+    send_resolved: false

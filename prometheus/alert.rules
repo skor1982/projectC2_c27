@@ -1,0 +1,31 @@
+groups: 
+- name: example
+
+  rules:
+  - alert: StasusCodeNot200
+    expr: probe_http_status_code != 200
+    for: 0m
+    labels:
+      severity: critical
+    annotations:
+      summary: "HTTP status code is not 200"
+      description: "HTTP probe return code VALUE = {{ $value }}  LABELS: {{ $labels }}"
+  
+  - alert: BigLatency
+    expr: probe_duration_seconds > 5
+    for: 0m
+    labels:
+      severity: critical
+    annotations:
+      summary: "High latency on blackbox probe"
+      description: "High latency during HTTP probe: VALUE = {{ $value }} LABELS: {{ $labels }}"
+   
+  
+  - alert: RecentReboot
+    expr: sum(time()-node_boot_time_seconds{instance="node-exporter:9100"}) < 600
+    for: 0m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Prometheus target recently rebooted (instance {{ $labels.instance }})"
+      description: "A Prometheus target rebooted less than 10 min ago.VALUE = {{ $value }} LABELS: {{ $labels }}"
